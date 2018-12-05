@@ -1,0 +1,7 @@
+# Extensions                                                                                                   
+*.pyc
+*.swp
+*.swo
+
+# Folders
+gui/venv/
