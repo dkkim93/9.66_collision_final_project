@@ -1,3 +1,5 @@
+import time
+import pickle
 import cv2
 from util import read_filename
 
@@ -31,10 +33,8 @@ if __name__ == "__main__":
         while True:
             image = cv2.imread(filename)
             image = cv2.resize(image, (600, 600))
-            write_text(image, text="Enter 1 for collision", loc=(60, 50))
-            write_text(image, text="Enter 0 for no-collision", loc=(60, 100))
-            write_text(image, text="Response: ", loc=(60, 150))
-            write_text(image, text=user_input, loc=(250, 150))
+            write_text(image, text="Response: ", loc=(60, 50))
+            write_text(image, text=user_input, loc=(250, 50))
             cv2.imshow("image", image)
 
             c = cv2.waitKey(1)
@@ -43,10 +43,27 @@ if __name__ == "__main__":
                 # If enter is pressed then save data
                 # and move to next image
                 if ord(chr(c)) == 13:
-                    break
+                    try:
+                        if float(user_input) < 0 or float(user_input) > 10:
+                            write_text(image, text="Invalid Input", loc=(60, 150))
+                            time.sleep(0.2)
+                        else:
+                            break
+                    except ValueError:
+                        write_text(image, text="Invalid Input", loc=(60, 150))
+                        time.sleep(0.2)
                 else:
+                    # Shift is pressed
+                    if ord(chr(c)) == 255:
+                        pass
+
                     # Backspace is pressed
-                    if ord(chr(c)) == 8:
+                    elif ord(chr(c)) == 8:
                         user_input = user_input[:-1]
+
                     else:
                         user_input += chr(c)
+
+        # Save data with label (remove .png)
+        with open(filename[:-4] + "_label", "wb") as output:
+            pickle.dump(user_input, output, pickle.HIGHEST_PROTOCOL)
