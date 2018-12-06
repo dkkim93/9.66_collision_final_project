@@ -8,8 +8,9 @@ import matplotlib.pyplot as plt
 np.random.seed(0)
 
 class Agent:
-	def __init__(self, pos): 
+	def __init__(self, pos, num_dir=8): 
 		self.pos = pos
+		self.dir_vectors = np.random.uniform(8)
 
 class GridWorld:
 	def __init__(self, w=10, h=10):
@@ -33,7 +34,9 @@ def sample_model(model, sample_size=1):
 	return model.sample(sample_size)
 
 def update_probs(model, obs): 
-	# TODO(rewang)
+	# TODO(rewang): merge with transition updates of the hmm model (basically the same idea)
+	# based on previous and current state, update probability vectors under
+	# agent.dir_vectors
 	raise NotImplementedError
 
 def init_start_prob(model):
