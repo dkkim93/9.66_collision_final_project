@@ -6,6 +6,7 @@ def read_filename(path):
 
     files = os.listdir(path)
     for filename in files:
-        filename_n.append(path + "/" + filename)
+        if ".png" in filename:
+            filename_n.append(path + "/" + filename)
 
     return filename_n
