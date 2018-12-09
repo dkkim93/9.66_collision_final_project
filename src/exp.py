@@ -9,67 +9,80 @@ from sklearn.externals import joblib
 import matplotlib.pyplot as plt
 
 
-# example of input 
-a1 = np.array([[0,0], [0,1], [0,2], [0,3], [0,4]])
-a2 = np.array([[4, 0],  [3, 0], [2, 0], [1, 0], [0, 0]])
-
-
 ## Experiments
+
+# get directions by time steps
+def get_direction(pos):
+	"""
+	pos is a n x 2 vector
+	"""
+	dirs = []
+
+	for i in range(1, len(pos)):
+		delta1 = (pos[i]-pos[i-1])
+		dirs.append(delta1.tolist())
+
+	return dirs
+
+
+# get direction vector
+def get_direction_vector(directions):
+	"""
+	dir = [1,0]
+	"""
+	to_be_returned = []
+	for i in range(len(directions)):
+		res = np.zeros(8)
+		order = np.array([[0,1],[1,1],[1,0], [1,-1], [0,-1], [-1,-1],[-1,0], [-1,1]])
+		ind = np.where((order==tuple(directions[i])).all(axis=1))
+		res[ind] = 1
+		to_be_returned.append(res)
+	return to_be_returned
+
 
 # positions
 a1 = np.array([[0,0], [0,1], [0,2], [0,3], [0,4]])
 a2 = np.array([[4, 0], [3, 0], [2, 0], [1, 0], [0, 0]])
 
-dir = np.array([[0,1],[1,0],[-1,0],[0,-1],[1,1],[-1,-1],[1,-1],[-1,1]])
+# dir1 = get_direction_vector(get_direction(a1))
+# dir2 = get_direction_vector(get_direction(a2))
 
-# directions
-# for i in range(1, len(a1)):
-# 	delta = (a1[i]-a1[i-1]).tolist()
-# 	dir1.append(delta)
-# 	print(delta.tolist(), type(delta))
 
-# res = create_multisequence_model(dir,dir)
-
-# print(res)
-# print(sample_model(res, 1))
-
-dir_index = 3
-# this is supposed to be a probability disitribution over components
-cur_dir = np.zeros(8)
-cur_dir[dir_index] = 1
-
+dir1 = get_direction(a1)
+dir2 = get_direction(a2)
 
 model_exp = hmm.GaussianHMM(n_components=8, covariance_type="full")
+startprob = np.ones(model_exp.n_components) / model_exp.n_components
+transmat = np.ones((model_exp.n_components,model_exp.n_components)) / model_exp.n_components
+means = np.array([[0,1],[1,1],[1,0], [1,-1], [0,-1], [-1,-1],[-1,0], [-1,1]])
+covars = .5 * np.tile(np.identity(2), (8, 1, 1))
 
-# Build an HMM instance and set parameters
-# 8 signifies the 8 diff options on directions
-model = hmm.GaussianHMM(n_components=4, covariance_type="full")
-
-
-
-startprob = np.array([0.6, 0.3, 0.1, 0.0])
-# The transition matrix, note that there are no transitions possible
-# between component 1 and 3
-transmat = np.array([[0.7, 0.2, 0.0, 0.1],
-                     [0.3, 0.5, 0.2, 0.0],
-                     [0.0, 0.3, 0.5, 0.2],
-                     [0.2, 0.0, 0.2, 0.6]])
-# # The means of each component
-means = np.array([[0.0,  0.0],
-                  [0.0, 11.0],
-                  [9.0, 10.0],
-                  [11.0, -1.0]])
-# The covariance of each component
-covars = .5 * np.tile(np.identity(2), (4, 1, 1))
+model_exp.startprob_ = startprob
+model_exp.transmat_ = transmat
+model_exp.means_ = means
+model_exp.covars_ = covars
 
 
-# Instead of fitting it from the data, we directly set the estimated
-# parameters, the means and covariance of the components
-model.startprob_ = startprob
-model.transmat_ = transmat
-model.means_ = means
-model.covars_ = covars
-# Generate samples
+# print(dir1)
+# model_exp.fit(dir1)
+
+X, Z = model_exp.sample(500)
+
+print(X)
+
+# Plot the sampled data
+plt.plot(X[:, 0], X[:, 1], ".-", label="observations", ms=6,
+         mfc="orange", alpha=0.7)
+
+# Indicate the component numbers
+for i, m in enumerate(means):
+    plt.text(m[0], m[1], 'Component %i' % (i + 1),
+             size=17, horizontalalignment='center',
+             bbox=dict(alpha=.7, facecolor='w'))
+plt.legend(loc='best')
+plt.show()
+
+
 X, Z = model.sample(500)
 
 # Plot the sampled data
