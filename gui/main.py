@@ -1,7 +1,6 @@
+import cv2
 import time
 import pickle
-import cv2
-from util import read_filename
 
 
 def write_text(image, text, loc):
@@ -23,21 +22,25 @@ def write_text(image, text, loc):
 
 
 if __name__ == "__main__":
-    # Read filenames in directory
-    filename_n = read_filename(path="./data")
+    # Set parameters
+    IMG_PATH = "../data/imgs/"
+    N_EPISODE = 89
+    MAX_TIME = 5
 
     # Show image and receive user input
-    for filename in filename_n:
+    for i_episode in range(N_EPISODE):
         user_input = ""
+        i_time = 0
 
         while True:
+            filename = IMG_PATH + "course_966_e_" + "%02d" % (i_episode) + "_t_" + "%02d" % (i_time) + ".png"
+
             image = cv2.imread(filename)
-            image = cv2.resize(image, (600, 600))
             write_text(image, text="Response: ", loc=(60, 50))
             write_text(image, text=user_input, loc=(250, 50))
             cv2.imshow("image", image)
 
-            c = cv2.waitKey(1)
+            c = cv2.waitKey(2000)  # Wait for x ms
             # NOTE -1 is when no key is pressed
             if c != -1:
                 # If enter is pressed then save data
@@ -60,7 +63,15 @@ if __name__ == "__main__":
                     # Backspace is pressed
                     elif ord(chr(c)) == 8:
                         user_input = user_input[:-1]
-
+                    # Right arrow is pressed
+                    elif ord(chr(c)) == 83:
+                        i_time += 1
+                        if i_time > MAX_TIME:
+                            i_time = MAX_TIME
+                    elif ord(chr(c)) == 81:
+                        i_time -= 1
+                        if i_time < 0:
+                            i_time = 0
                     else:
                         user_input += chr(c)
 
