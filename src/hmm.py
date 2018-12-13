@@ -5,6 +5,7 @@ from sklearn.externals import joblib
 import matplotlib.pyplot as plt
 import random
 
+DIRECTIONS = np.array([[0,1],[1,1],[1,0], [1,-1], [0,-1], [-1,-1],[-1,0], [-1,1]])
 np.random.seed(0)
 class Agent:
 	def __init__(self, pos, num_dir=8):
@@ -53,6 +54,12 @@ def create_multisequence_model(P1, P2):
 	lengths = [len(P1), len(P2)]
 	return hmm.GaussianHMM(n_components=3).fit(P, lengths)
 
+###
+def get_nearest_direction(heading_data):
+	pass
+
+
+
 ### PLOTTING DATA
 
 def plot(X,Z):
@@ -69,13 +76,13 @@ def get_direction(pos):
 	"""
 	dirs = []
 	for i in range(1, len(pos)):
-		print(pos[i], pos[i-1])
-
 		delta1 = (pos[i]-pos[i-1])
-		print(delta1)
 		dirs.append(delta1.tolist())
 	return dirs
 
+# TODO
+# convert heading from radian => direction vector
+# get 5th time stamp pos vector
 
 # get direction vector
 def get_direction_vector(directions):
@@ -90,6 +97,41 @@ def get_direction_vector(directions):
 		ind = np.where((order==tuple(directions[i])).all(axis=1)) 
 		to_be_returned.append((ind[0]+ random.random()).tolist())
 	return to_be_returned
+
+
+def get_distance_model(dists): 
+	model = hmm.GaussianHMM(n_components=5, covariance_type="full")
+	model.fit(dists)
+	return model
+
+
+def get_euclidean_dists(pos1, pos2):
+	return np.linalg.norm(pos1-pos2)
+
+def get_dir_vector(dir_sample):
+	# should be a float between 0, 8
+	ind = round(dir_sample)
+	if dir_sample - ind > 0: # round down 
+		if ind <= 6: 
+			return (dir_sample - ind)*DIRECTIONS[ind] + (1-(dir_sample - ind))*DIRECTIONS[ind+1]
+		else: 
+			return (dir_sample - ind)*DIRECTIONS[ind]
+	else: 
+		if ind >1:
+			return (ind-dir_sample)*DIRECTIONS[ind] + (1-(ind-dir_sample))*DIRECTIONS[ind-1]
+		else:
+			return (ind-dir_sample)*DIRECTIONS[ind] 
+
+def predict_position(dir_samples, pos):
+	pos_res = []
+	cur_pos = pos
+
+	for i in dir_samples:
+		dir_vec = get_dir_vector(i)
+		# new position
+		cur_pos += dir_vec
+		pos_res.append(cur_pos)
+	return pos_res
 
 def analyze(a1, a2): 
 	# positions
@@ -110,11 +152,12 @@ def analyze(a1, a2):
 
 	# hmm library: needs samples >= n_components
 	model_exp.fit(dir1+dir1)
+
 	X, Z = sample_model(model_exp, 500)
 	plot(X,Z)
 
 ###
-
+# Pipeline: get pos => derive directions => create dir model => sample directions => get new positions => derive euclidean dist => eucl. dist model 
 
 ### Saving for later evaluation ###
 
