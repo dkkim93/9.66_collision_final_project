@@ -5,28 +5,17 @@ from keras.callbacks import History
 
 
 class EnsembleNN(object):
-    def __init__(self, dim, writer, save_model_path, motion_primitives, predict_w_bootstrap, reset_model, epochs):
+    def __init__(self, input_dim, output_dim, ensemble_size=5):
+        self.input_dim = input_dim
+        self.output_dim = output_dim
+        self.ensemble_size = ensemble_size
+        self.history = History()
         
-        self.dim = dim
-        self.input_shape = (self.dim["max_roll_out_time"], self.dim["x_train_dim"])
-        
-        # Parameters
-        self.epochs = epochs
-        self.batch_size = 128
-        self.validation_split = 0.2
-        
-        self.get_pred_var = True  # Get variance from prediction     
-        self.get_act_var = False  # Get variance from output bf last activation
-
         # Bootstrapping ensembles
-        self.ensemble_size = 5
         self.ensemble = [self.init_model() for _ in range(self.ensemble_size)]
 
-        # Misc
-        self.history = History()
-
     def init_model(self):
-        inputs = Input(shape=(self.input_shape[1],))
+        inputs = Input(shape=(self.input_dim,))
         x = Dense(units=32, activation='relu')(inputs)
         # x = Dropout(0.3)(x, training=True)
         x = Dense(units=16, activation='relu')(x)
@@ -45,37 +34,25 @@ class EnsembleNN(object):
         return model
 
     def train(self, X, Y):
-        """
-        # Adapts the weights
-        # Input: X, dim: [nb_executed_episodes = [current_session_id * n_episodes], 
-            max_roll_out_time, (dim_act_space + dim_obs_space)] 
-        """
+        # Parameters
+        batch_size = 16
+        epoch = 1
+
         loss = 0.0
         acc = 0.0
-
-        # Compress executed episodes and timesteps
-        X = X.reshape(-1, self.dim["x_train_dim"])
-
-        # Assign label to every timestep in episode
-        Y = np.repeat(Y, repeats=self.dim["max_roll_out_time"], axis=0)
-
-        # TODO ONLY FOR TEST, FIND BETTER WAY TO SET MODEL WEIGHTS TO ZERO!!!
-        if self.reset_model:
-            self.ensemble = [self.init_model() for _ in range(self.ensemble_size)]
-
         for model in self.ensemble:
             # Draw random samples from data to not train with full data
-            sample_ids = np.random.choice(X.shape[0], self.batch_size, replace=False)
+            sample_ids = np.random.choice(X.shape[0], batch_size, replace=False)
 
             model.fit(
                 X[sample_ids], 
                 Y[sample_ids], 
-                epochs=self.epochs, 
-                verbose=0, 
-                batch_size=self.batch_size,
+                epochs=epoch, 
+                verbose=1, 
+                batch_size=batch_size,
                 initial_epoch=0,
                 callbacks=[self.history],
-                validation_split=self.validation_split) 
+                validation_split=0.2) 
             loss += self.history.history["loss"][-1]  # Loss at end of epoch
             acc += np.mean(self.history.history["acc"])  # Average accuracy of classification label
 
