@@ -106,7 +106,7 @@ def radian_to_dir(data, pos):
 	pos_res = []
 	for d in data:
 		i,j, wi, wj = get_dir_indices_weight(d) 
-		cur_pos = DIRECTIONS[i]*wi +ß DIRECTIONS[j]*wj
+		cur_pos = DIRECTIONS[i]*wi + DIRECTIONS[j]*wj
 		pos_res.append(cur_pos)
 	return pos_res
 
