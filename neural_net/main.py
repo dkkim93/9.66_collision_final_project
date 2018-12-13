@@ -1,6 +1,8 @@
 from normal_nn import NormalNN
-# from ensemble_nn import EnsembleNN
+from ensemble_nn import EnsembleNN
 from utils import *
+
+MODEL = "ensemble"  # Either "normal" or "ensemble"
 
 
 if __name__ == "__main__":
@@ -11,9 +13,17 @@ if __name__ == "__main__":
     # Set up model
     input_dim = input_data.shape[1]
     output_dim = label_data.shape[1]
-    model = NormalNN(
-        input_dim=input_dim,
-        output_dim=output_dim)
+    if MODEL == "normal":
+        model = NormalNN(
+            input_dim=input_dim,
+            output_dim=output_dim)
+    elif MODEL == "ensemble":
+        model = EnsembleNN(
+            input_dim=input_dim,
+            output_dim=output_dim,
+            ensemble_size=5)
+    else:
+        raise ValueError()
 
     # Train model
     model.train(input_data, label_data)
