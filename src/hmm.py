@@ -42,14 +42,6 @@ def init_start_prob(model):
 	return model
 
 
-# def init_transition_prob(model, agent):
-# 	raise Not NotImplementedError
-# 	model.transmat_ = np.array([[0.7, 0.2, 0.1],
-# 	                            [0.3, 0.5, 0.2],
-# 	                            [0.3, 0.3, 0.4]])
-# 	return model
-
-
 def create_multisequence_model(P1, P2):
 	"""
 	should be direction observations

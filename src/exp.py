@@ -11,6 +11,20 @@ import matplotlib.pyplot as plt
 
 ## Experiments
 
+
+def plot(X,Z):
+	# Plot the sampled data
+	plt.plot(X[:, 0], X[:, 1], ".-", label="observations", ms=6,
+	         mfc="orange", alpha=0.7)
+
+	# Indicate the component numbers
+	for i, m in enumerate(means):
+	    plt.text(m[0], m[1], 'Component %i' % (i + 1),
+	             size=17, horizontalalignment='center',
+	             bbox=dict(alpha=.7, facecolor='w'))
+	plt.legend(loc='best')
+	plt.show()
+
 # get directions by time steps
 def get_direction(pos):
 	"""
@@ -47,7 +61,6 @@ a2 = np.array([[4, 0], [3, 0], [2, 0], [1, 0], [0, 0]])
 # dir1 = get_direction_vector(get_direction(a1))
 # dir2 = get_direction_vector(get_direction(a2))
 
-
 dir1 = get_direction(a1)
 dir2 = get_direction(a2)
 
@@ -62,6 +75,11 @@ model_exp.transmat_ = transmat
 model_exp.means_ = means
 model_exp.covars_ = covars
 
+# model_exp.
+
+model_exp.predict(get_direction_vector(np.reshape(dir1,[len(dir1,1)])))
+
+
 
 # print(dir1)
 # model_exp.fit(dir1)
@@ -70,29 +88,4 @@ X, Z = model_exp.sample(500)
 
 print(X)
 
-# Plot the sampled data
-plt.plot(X[:, 0], X[:, 1], ".-", label="observations", ms=6,
-         mfc="orange", alpha=0.7)
 
-# Indicate the component numbers
-for i, m in enumerate(means):
-    plt.text(m[0], m[1], 'Component %i' % (i + 1),
-             size=17, horizontalalignment='center',
-             bbox=dict(alpha=.7, facecolor='w'))
-plt.legend(loc='best')
-plt.show()
-
-
-X, Z = model.sample(500)
-
-# Plot the sampled data
-plt.plot(X[:, 0], X[:, 1], ".-", label="observations", ms=6,
-         mfc="orange", alpha=0.7)
-
-# Indicate the component numbers
-for i, m in enumerate(means):
-    plt.text(m[0], m[1], 'Component %i' % (i + 1),
-             size=17, horizontalalignment='center',
-             bbox=dict(alpha=.7, facecolor='w'))
-plt.legend(loc='best')
-plt.show()
