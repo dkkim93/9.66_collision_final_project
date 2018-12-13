@@ -45,4 +45,7 @@ def process_data(data):
     input_data = np.squeeze(np.array([input_data]), axis=0)
     label_data = np.squeeze(np.array([label_data]), axis=0)
 
+    print("input_data.shape:", input_data.shape)
+    print("label_data.shape:", label_data.shape)
+
     return input_data, label_data

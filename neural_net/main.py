@@ -7,7 +7,7 @@ MODEL = "ensemble"  # Either "normal" or "ensemble"
 
 if __name__ == "__main__":
     # Process data
-    data = load_data("../data/logs/obs_history_1")
+    data = load_data("../data/logs/10000e/obs_history")
     input_data, label_data = process_data(data)
 
     # Set up model
@@ -27,3 +27,6 @@ if __name__ == "__main__":
 
     # Train model
     model.train(input_data, label_data)
+
+    # Test model
+    model.prediction(input_data[0])
