@@ -54,11 +54,6 @@ def create_multisequence_model(P1, P2):
 	lengths = [len(P1), len(P2)]
 	return hmm.GaussianHMM(n_components=3).fit(P, lengths)
 
-###
-def get_nearest_direction(heading_data):
-	pass
-
-
 
 ### PLOTTING DATA
 
@@ -80,9 +75,42 @@ def get_direction(pos):
 		dirs.append(delta1.tolist())
 	return dirs
 
-# TODO
-# convert heading from radian => direction vector
-# get 5th time stamp pos vector
+
+## FOR DATA EXTRACTION
+
+def radian_to_degree(sample): 
+	return sample * 180 / np.pi
+
+def get_dir_indices_weight(sample): 
+	deg = radian_to_degree(sample)
+	if deg <= 90.0 and deg >= 0.0:
+		return 0, 1, (90-deg)/45., 1-(90-deg)/45.
+	elif deg <= 45.0 and deg >= 0.0:
+		return 1, 2, (45-deg)/45., 1-(45-deg)/45.
+	elif deg >= 315.0 and deg <= 360.0:
+		return 2, 3, (360-deg)/45., 1-(360-deg)/45.
+	elif deg <= 315.0 and deg >= 270.0:
+		return 3,4, (315-deg)/45., 1-(315-deg)/45.
+	elif deg <= 270.0 and deg >= 225.0:
+		return 4,5, (270-deg)/45., 1-(270-deg)/45.
+	elif deg <= 225.0 and deg >= 180.0:
+		return 5,6, (225-deg)/45., 1-(225-deg)/45.
+	elif deg <= 180.0 and deg >= 135.0:
+		return 6,7, (180-deg)/45., 1-(180-deg)/45.
+	elif deg <= 135.0 and deg >= 90.0:
+		return 7,0, (135-deg)/45., 1-(135-deg)/45.
+
+
+def radian_to_dir(data, pos): 
+	cur_pos = pos
+	pos_res = []
+	for d in data:
+		i,j, wi, wj = get_dir_indices_weight(d) 
+		cur_pos = DIRECTIONS[i]*wi +ß DIRECTIONS[j]*wj
+		pos_res.append(cur_pos)
+	return pos_res
+
+## for experiments
 
 # get direction vector
 def get_direction_vector(directions):
