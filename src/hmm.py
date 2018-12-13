@@ -109,6 +109,8 @@ startprob = np.ones(len())
 covars = .5 * np.tile(np.identity(2), (4, 1, 1))
 
 
+
+
 # Instead of fitting it from the data, we directly set the estimated
 # parameters, the means and covariance of the components
 model.startprob_ = startprob
