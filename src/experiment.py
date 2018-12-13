@@ -5,7 +5,6 @@ from sklearn.externals import joblib
 import matplotlib.pyplot as plt
 import random
 
-
 DIRECTIONS = np.array([[0,1],[1,1],[1,0], [1,-1], [0,-1], [-1,-1],[-1,0], [-1,1]])
 np.random.seed(0)
 
@@ -151,6 +150,8 @@ def analyze(a1, a2):
 
 	Xd,Zd = model.sample(100)
 	plot(Xd,Zd)
+
+
 
 analyze(0,0)
 

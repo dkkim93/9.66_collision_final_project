@@ -1,7 +1,6 @@
 import numpy as np
 import pickle # I think my pickle file requires python3
 
-
   
 def load_data(file_name):
   # Load data
@@ -10,7 +9,7 @@ def load_data(file_name):
   data = pickle.load(pickle_file)
   pickle_file.close()
 
-  # Unnecessary. Just to show whats in the data.
+  # As a reference: Information inside `data`
   # agent1_pos = data["agent1_pos"]
   # agent1_heading = data["agent1_heading"] 
   # agent2_pos = data["agent2_pos"]
