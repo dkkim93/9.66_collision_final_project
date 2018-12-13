@@ -1,3 +1,8 @@
+# Hidden parameter: euclidean distance
+import numpy as np
+from hmmlearn import hmm
+import matplotlib.pyplot as plt
+import random
 
 DIRECTIONS = np.array([[0,1],[1,1],[1,0], [1,-1], [0,-1], [-1,-1],[-1,0], [-1,1]])
 np.random.seed(0)
@@ -26,7 +31,11 @@ def radian_to_degree(sample):
 	return sample * 180 / np.pi
 
 def get_dir_indices_weight(sample): 
-	deg = radian_to_degree(sample)
+	deg =sample
+	# comes around
+	if deg < 0:
+		deg = abs(deg)
+
 	if deg <= 90.0 and deg >= 0.0:
 		return 0, 1, (90-deg)/45., 1-(90-deg)/45.
 	elif deg <= 45.0 and deg >= 0.0:
@@ -43,15 +52,17 @@ def get_dir_indices_weight(sample):
 		return 6,7, (180-deg)/45., 1-(180-deg)/45.
 	elif deg <= 135.0 and deg >= 90.0:
 		return 7,0, (135-deg)/45., 1-(135-deg)/45.
-
+	else:
+		raise Error("something is wrong with the degree")
 
 def radian_to_dir(data, pos): 
 	cur_pos = pos
-	pos_res = []
+	pos_res = np.array([pos])
+	data = radian_to_degree(data)
 	for d in data:
-		i,j, wi, wj = get_dir_indices_weight(d) 
-		cur_pos = DIRECTIONS[i]*wi + DIRECTIONS[j]*wj
-		pos_res.append(cur_pos)
+		i, j, wi, wj = get_dir_indices_weight(d) 
+		cur_pos += DIRECTIONS[i]*wi + DIRECTIONS[j]*wj
+		pos_res = np.vstack((pos_res, cur_pos))
 	return pos_res
 
 ## for experiments
