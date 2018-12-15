@@ -8,12 +8,19 @@ DIRECTIONS = np.array([[0,1],[1,1],[1,0], [1,-1], [0,-1], [-1,-1],[-1,0], [-1,1]
 np.random.seed(0)
 
 ### PLOTTING DATA
-def plot(X,Z):
+def plot(X,Z, heading=None):
 	plt.plot(X)
+	if heading: 
+		plt.title("HMM results with experiment {}".format(heading))
+	plt.xlabel("Time")
+	plt.ylabel("Distance between two agents")
 	# plt.plot(Z)
 	plt.ylim((0,7))
 	plt.legend(loc='best')
-	plt.show()
+	filename = 'hmm_e_' + str(heading) + '.png' 
+	plt.savefig(filename)
+	plt.clf()
+	# plt.show()
 
 # get directions by time steps
 def get_direction(pos):
@@ -59,6 +66,7 @@ def radian_to_dir(data, pos):
 	cur_pos = pos
 	pos_res = np.array([pos])
 	data = radian_to_degree(data)
+	print("The heading in degrees is: {}".format(data))
 	for d in data:
 		i, j, wi, wj = get_dir_indices_weight(d) 
 		cur_pos += DIRECTIONS[i]*wi + DIRECTIONS[j]*wj

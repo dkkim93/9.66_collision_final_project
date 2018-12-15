@@ -39,29 +39,36 @@ def analyze_fake_data(a1, a2):
 	utils.plot(Xd,Zd)
 
 
+#### IMPORTANT CODE 
+#### Change data indices here
+# i = 0
+
+
 def analyze_sim_data(): 
 	file_name = "../data/logs/obs_history_1"
 	data= read_data.load_data(file_name)
 
-	# positions
-	a1 = data["agent1_pos"][1:2]
-	a2 = data["agent2_pos"][1:2]
+	for i in range(20): 
+		# positions, only want the first 5 samples
+		a1 = data["agent1_pos"][i:i+1][:5]
+		a2 = data["agent2_pos"][i:i+1][:5]
 
-	# extract directions
-	dir1 = data["agent1_heading"][1:2]
-	dir2 = data["agent2_heading"][1:2]
+		# extract directions
+		dir1 = data["agent1_heading"][i:i+1]
+		dir2 = data["agent2_heading"][i:i+1]
 
-	a1_pos = utils.radian_to_dir(dir1[0], a1[0][-1])
-	a2_pos = utils.radian_to_dir(dir2[0], a2[0][-1])
+		a1_pos = utils.radian_to_dir(dir1[0][:5], a1[0][-1])
+		a2_pos = utils.radian_to_dir(dir2[0][:5], a2[0][-1])
 
-	# Create distance model
-	dists = utils.get_euclidean_dists(a1_pos, a2_pos)
-	dists = [[d] for d in dists]
-	print(dists)
-	model = utils.get_distance_model(dists)
+		# Create distance model
+		dists = utils.get_euclidean_dists(a1_pos, a2_pos)
+		dists = [[d] for d in dists]
+		print("Here are the distances between the two agents: {}".format(dists))
+		model = utils.get_distance_model(dists)
 
-	Xd,Zd = model.sample(100)
-	utils.plot(Xd,Zd)
+		# sampling distance model
+		Xd,Zd = model.sample(100)
+		utils.plot(Xd,Zd, heading=i)
 
 analyze_sim_data()
 ###
