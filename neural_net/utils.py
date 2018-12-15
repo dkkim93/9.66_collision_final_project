@@ -30,17 +30,19 @@ def process_data(data):
         data_point_agent2 = data["agent2_pos"][i_data, 0:n_episode, :].flatten()
 
         data_point = np.concatenate([data_point_agent1, data_point_agent2])
-
-        input_data.append(data_point)
-
-        # Process label
-        label = np.max(data["is_collided"][i_data])
-        if label == 0.:
-            label_data.append([1., 0.])  # One hot 
-        elif label == 1.:
-            label_data.append([0., 1.])  # One hot 
+        if np.sum(data_point) == 0:
+            pass
         else:
-            raise ValueError()
+            input_data.append(data_point)
+
+            # Process label
+            label = np.max(data["is_collided"][i_data])
+            if label == 0.:
+                label_data.append([1., 0.])  # No collision one hot
+            elif label == 1.:
+                label_data.append([0., 1.])  # Collision one hot
+            else:
+                raise ValueError()
 
     input_data = np.squeeze(np.array([input_data]), axis=0)
     label_data = np.squeeze(np.array([label_data]), axis=0)
