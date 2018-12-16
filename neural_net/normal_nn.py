@@ -36,7 +36,7 @@ class NormalNN(object):
         self.model.fit(
             X, 
             Y, 
-            epochs=250, 
+            epochs=100, 
             verbose=1, 
             batch_size=batch_size,
             initial_epoch=0,

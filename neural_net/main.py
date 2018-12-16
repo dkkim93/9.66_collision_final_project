@@ -2,7 +2,7 @@ from normal_nn import NormalNN
 from ensemble_nn import EnsembleNN
 from utils import *
 
-MODEL = "ensemble"  # Either "normal" or "ensemble"
+MODEL = "normal"  # Either "normal" or "ensemble"
 
 
 if __name__ == "__main__":

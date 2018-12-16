@@ -2,6 +2,13 @@ import pickle
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import seaborn as sns
+
+# sns.set_style("darkgrid")
+sns.set_style("whitegrid")
+# sns.set_style("ticks")
+plt.rc('text', usetex=True)                                                                                     
+plt.rc('font', family='serif')
 
 
 def read_human_data():
@@ -26,6 +33,31 @@ def read_human_data():
         collision_prob.append(label)
 
     return collision_prob
+
+
+def vis_human_data(human_collision_prob):
+    plt.hist(
+        human_collision_prob,
+        alpha=0.7, rwidth=0.85,
+        bins=10)
+    plt.xlim([0, 10])
+    plt.xlabel(r"\textbf{Rating ($0$: No collision, $10$: Collision)}", size=14)
+    plt.ylabel(r"\textbf{Frequency}", size=14)
+    plt.title(r"\textbf{Histogram of Human Data Collection (Total $89$ Samples)}", size=15)
+    plt.show()
+
+
+def vis_nn_data(nn_collision_prob):
+    # nn_collision_prob = np.round(nn_collision_prob, decimals=1)
+    plt.hist(
+        nn_collision_prob,
+        alpha=0.7, rwidth=0.85,
+        bins=20)
+    # plt.xlim([0, 1.])
+    plt.xlabel(r"\textbf{Collision Probability}", size=14)
+    plt.ylabel(r"\textbf{Frequency}", size=14)
+    plt.title(r"\textbf{Histogram of NN Prediction (Total $89$ Samples)}", size=15)
+    plt.show()
 
 
 def read_key_from_log(path, key, index, flip=False):
@@ -69,28 +101,34 @@ if __name__ == "__main__":
         key="collision prob",
         index=-1)
 
-    plt.plot(ensemble_collision_uncertainty)
-    plt.show()
+    # Hisogram on NN data
+    vis_nn_data(nn_collision_prob)
 
     # Convert to panda
     data = {}
-    data["human"] = np.array(human_collision_prob)
-    data["nn"] = np.array(nn_collision_prob)
-    data["ensemble"] = np.array(ensemble_collision_prob)
+    data["human_prob"] = np.array(human_collision_prob)
+    data["nn_prob"] = np.array(nn_collision_prob)
+    data["ensemble_prob"] = np.array(ensemble_collision_prob)
     data_panda = pd.DataFrame(data=data)
 
-    # Compute corr
-    corr = data_panda["human"].corr(data_panda["nn"])
-    print(corr)
-    corr = data_panda["nn"].corr(data_panda["ensemble"])
-    print(corr)
+    # Compute corr: human prob vs nn prob
+    corr = data_panda["human_prob"].corr(data_panda["nn_prob"])
+    print("Corr between human prob and nn prob:", corr)
 
-    # plt.figure()
-    # plt.plot(human_collision_prob)
-    # plt.plot(nn_collision_prob)
+    # # Plot human prob vs nn prob
+    # plt.plot(data["human_prob"], label="Human Response")
+    # plt.plot(data["nn_prob"], label="Neural Network Model")
+    # legend = plt.legend(
+    #     bbox_to_anchor=(0., 1.07, 1., .102),
+    #     loc=3,
+    #     ncol=2,
+    #     mode="expand",
+    #     borderaxespad=0.,
+    #     prop={"size": 11})
+    # plt.xlabel(r'\textbf{Data}', size=14)
+    # plt.ylabel(r'\textbf{Collision Probability}', size=14)
+    # plt.title(r'\textbf{Comparison between Human and Neural Network Data}', size=15)
+    # plt.ylim([-0.03, 1.03])
     # plt.show()
 
-    # ensemble_collision_prob = read_key_from_log(
-    #     path="result_ensemble.txt",
-    #     key="collision prob",
-    #     index=5)
+    # Histogram
