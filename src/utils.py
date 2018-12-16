@@ -1,23 +1,28 @@
 # Hidden parameter: euclidean distance
 import numpy as np
 from hmmlearn import hmm
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
+import pylab as plt
 import random
 
 DIRECTIONS = np.array([[0,1],[1,1],[1,0], [1,-1], [0,-1], [-1,-1],[-1,0], [-1,1]])
 np.random.seed(0)
+# plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+params = {'legend.fontsize': 12}
+plt.rcParams.update(params)
 
 ### PLOTTING DATA
 def plot(X,Z, heading=None):
 	plt.plot(X)
 	if heading: 
-		plt.title("HMM results with experiment {}".format(heading))
-	plt.xlabel("Time")
+		plt.title('HMM results with experiment {}'.format(heading))
+	plt.xlabel('Time')
 	plt.ylabel("Distance between two agents")
 	# plt.plot(Z)
 	plt.ylim((0,7))
 	plt.legend(loc='best')
-	filename = 'hmm_e_' + str(heading) + '.png' 
+	filename = '../hmm_results/hmm_e_' + str(heading) + '.png' 
 	plt.savefig(filename)
 	plt.clf()
 	# plt.show()
@@ -91,6 +96,7 @@ def get_direction_vector(directions):
 
 
 def get_distance_model(dists): 
+	
 	model = hmm.GaussianHMM(n_components=5, covariance_type="full")
 	model.fit(dists)
 	return model

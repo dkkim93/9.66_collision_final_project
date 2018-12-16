@@ -1,5 +1,6 @@
 # Hidden parameter: euclidean distance
 import numpy as np
+import pickle
 from hmmlearn import hmm
 from sklearn.externals import joblib
 import matplotlib.pyplot as plt
@@ -43,6 +44,11 @@ def analyze_fake_data(a1, a2):
 #### Change data indices here
 # i = 0
 
+def normalized(a, axis=-1, order=2):
+    l2 = np.atleast_1d(np.linalg.norm(a, order, axis))
+    l2[l2==0] = 1
+    return a / np.expand_dims(l2, axis)
+
 
 def analyze_sim_data(): 
 	file_name = "../data/logs/obs_history_1"
@@ -64,11 +70,21 @@ def analyze_sim_data():
 		dists = utils.get_euclidean_dists(a1_pos, a2_pos)
 		dists = [[d] for d in dists]
 		print("Here are the distances between the two agents: {}".format(dists))
+
 		model = utils.get_distance_model(dists)
+		# log_prob = model._compute_log_likelihood(np.array([[0.0],[1.0],[2.0],[3.0],[4.0],[5.0],[6.0]]))
+		log_prob = model.score_samples(np.array([[0.0],[1.0],[2.0],[3.0],[4.0],[5.0],[6.0]]))
+		# print("Transition matrix for experiment {}: \n {} ".format(i, normalized(np.exp(log_prob[1]))))
+		nm = normalized(np.exp(log_prob[1]))
+
+		with open('e_{}.txt'.format(i), 'wb') as f:
+			pickle.dump(nm, f)
+
 
 		# sampling distance model
 		Xd,Zd = model.sample(100)
 		utils.plot(Xd,Zd, heading=i)
+		# plt.plot(Zd)
 
 analyze_sim_data()
 ###
