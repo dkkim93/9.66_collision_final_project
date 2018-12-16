@@ -23,7 +23,7 @@ def plot(X,Z, heading=None):
 	plt.ylim((0,7))
 	plt.legend(loc='best')
 	filename = '../hmm_results/hmm_e_' + str(heading) + '.png' 
-	plt.savefig(filename)
+	# plt.savefig(filename)
 	plt.clf()
 	# plt.show()
 
@@ -71,7 +71,7 @@ def radian_to_dir(data, pos):
 	cur_pos = pos
 	pos_res = np.array([pos])
 	data = radian_to_degree(data)
-	print("The heading in degrees is: {}".format(data))
+	# print("The heading in degrees is: {}".format(data))
 	for d in data:
 		i, j, wi, wj = get_dir_indices_weight(d) 
 		cur_pos += DIRECTIONS[i]*wi + DIRECTIONS[j]*wj
@@ -96,8 +96,8 @@ def get_direction_vector(directions):
 
 
 def get_distance_model(dists): 
-	
-	model = hmm.GaussianHMM(n_components=5, covariance_type="full")
+
+	model = hmm.GaussianHMM(n_components=6, covariance_type="full")
 	model.fit(dists)
 	return model
 
