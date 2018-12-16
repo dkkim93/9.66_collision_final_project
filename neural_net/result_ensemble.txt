@@ -1,0 +1,199 @@
+ dongki@dongki  ~  cd class/9.660/.
+ dongki@dongki  ~/class/9.660  ls
+9.66_collision_final_project  966_pset1_2018  966_pset1_2018.zip  __MACOSX
+ dongki@dongki  ~/class/9.660  cd 9.66_collision_final_project 
+ls                                                                              
+ dongki@dongki  ~/class/9.660/9.66_collision_final_project   master  ls
+data  gui  hmm_results  LICENSE  neural_net  README.md  src
+ dongki@dongki  ~/class/9.660/9.66_collision_final_project   master  cd neural_net
+ls                                                                              
+ dongki@dongki  ~/class/9.660/9.66_collision_final_project/neural_net   master  ls
+ensemble_nn.py  main.py  normal_nn.py  __pycache__  result_nn.txt  utils.py
+ dongki@dongki  ~/class/9.660/9.66_collision_final_project/neural_net   master  python3 ensemble_nn.py 
+/home/dongki/.local/lib/python3.6/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+Using TensorFlow backend.
+ dongki@dongki  ~/class/9.660/9.66_collision_final_project/neural_net   master  python3 main.py 
+/home/dongki/.local/lib/python3.6/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+Using TensorFlow backend.
+input_data.shape: (8475, 20)
+label_data.shape: (8475, 2)
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_1 (InputLayer)         (None, 20)                0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 64)                1344      
+_________________________________________________________________
+dense_2 (Dense)              (None, 64)                4160      
+_________________________________________________________________
+dense_3 (Dense)              (None, 2)                 130       
+=================================================================
+Total params: 5,634
+Trainable params: 5,634
+Non-trainable params: 0
+_________________________________________________________________
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_2 (InputLayer)         (None, 20)                0         
+_________________________________________________________________
+dense_4 (Dense)              (None, 64)                1344      
+_________________________________________________________________
+dense_5 (Dense)              (None, 64)                4160      
+_________________________________________________________________
+dense_6 (Dense)              (None, 2)                 130       
+=================================================================
+Total params: 5,634
+Trainable params: 5,634
+Non-trainable params: 0
+_________________________________________________________________
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_3 (InputLayer)         (None, 20)                0         
+_________________________________________________________________
+dense_7 (Dense)              (None, 64)                1344      
+_________________________________________________________________
+dense_8 (Dense)              (None, 64)                4160      
+_________________________________________________________________
+dense_9 (Dense)              (None, 2)                 130       
+=================================================================
+Total params: 5,634
+Trainable params: 5,634
+Non-trainable params: 0
+_________________________________________________________________
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_4 (InputLayer)         (None, 20)                0         
+_________________________________________________________________
+dense_10 (Dense)             (None, 64)                1344      
+_________________________________________________________________
+dense_11 (Dense)             (None, 64)                4160      
+_________________________________________________________________
+dense_12 (Dense)             (None, 2)                 130       
+=================================================================
+Total params: 5,634
+Trainable params: 5,634
+Non-trainable params: 0
+_________________________________________________________________
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_5 (InputLayer)         (None, 20)                0         
+_________________________________________________________________
+dense_13 (Dense)             (None, 64)                1344      
+_________________________________________________________________
+dense_14 (Dense)             (None, 64)                4160      
+_________________________________________________________________
+dense_15 (Dense)             (None, 2)                 130       
+=================================================================
+Total params: 5,634
+Trainable params: 5,634
+Non-trainable params: 0
+_________________________________________________________________
+Training 0th model ...
+2018-12-15 00:52:47.923481: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+0th model acc 0.8991150437554779 and val acc 0.8637168137724772
+Training 1th model ...
+1th model acc 0.8986725661255266 and val acc 0.8825958703119846
+Training 2th model ...
+2th model acc 0.8951327434331618 and val acc 0.8761061947605955
+Training 3th model ...
+3th model acc 0.8986725661255266 and val acc 0.8672566367109968
+Training 4th model ...
+4th model acc 0.8942477876809495 and val acc 0.8802359877082803
+input_data.shape: (89, 20)
+label_data.shape: (89, 2)
+Data 0: no collision prob 0.01165 (0.00466) vs collision prob 0.98835 (0.00466)
+Data 1: no collision prob 0.33085 (0.05042) vs collision prob 0.66915 (0.05042)
+Data 2: no collision prob 0.01973 (0.01009) vs collision prob 0.98027 (0.01009)
+Data 3: no collision prob 0.21268 (0.12151) vs collision prob 0.78732 (0.12151)
+Data 4: no collision prob 0.29577 (0.05380) vs collision prob 0.70423 (0.05380)
+Data 5: no collision prob 1.00000 (0.00000) vs collision prob 0.00000 (0.00000)
+Data 6: no collision prob 0.99949 (0.00037) vs collision prob 0.00051 (0.00037)
+Data 7: no collision prob 0.99998 (0.00001) vs collision prob 0.00002 (0.00001)
+Data 8: no collision prob 0.99968 (0.00038) vs collision prob 0.00032 (0.00038)
+Data 9: no collision prob 0.25005 (0.06444) vs collision prob 0.74995 (0.06444)
+Data 10: no collision prob 1.00000 (0.00000) vs collision prob 0.00000 (0.00000)
+Data 11: no collision prob 0.99988 (0.00010) vs collision prob 0.00012 (0.00010)
+Data 12: no collision prob 0.20465 (0.13028) vs collision prob 0.79535 (0.13028)
+Data 13: no collision prob 0.99999 (0.00001) vs collision prob 0.00001 (0.00001)
+Data 14: no collision prob 0.28502 (0.04733) vs collision prob 0.71498 (0.04733)
+Data 15: no collision prob 0.37241 (0.07128) vs collision prob 0.62759 (0.07128)
+Data 16: no collision prob 0.01341 (0.00213) vs collision prob 0.98659 (0.00213)
+Data 17: no collision prob 0.99567 (0.00358) vs collision prob 0.00433 (0.00358)
+Data 18: no collision prob 1.00000 (0.00000) vs collision prob 0.00000 (0.00000)
+Data 19: no collision prob 0.28324 (0.04787) vs collision prob 0.71676 (0.04787)
+Data 20: no collision prob 0.96259 (0.02030) vs collision prob 0.03741 (0.02030)
+Data 21: no collision prob 0.99730 (0.00230) vs collision prob 0.00270 (0.00230)
+Data 22: no collision prob 0.96508 (0.03779) vs collision prob 0.03492 (0.03779)
+Data 23: no collision prob 1.00000 (0.00000) vs collision prob 0.00000 (0.00000)
+Data 24: no collision prob 0.99979 (0.00027) vs collision prob 0.00021 (0.00027)
+Data 25: no collision prob 0.99919 (0.00087) vs collision prob 0.00081 (0.00087)
+Data 26: no collision prob 0.99997 (0.00004) vs collision prob 0.00003 (0.00004)
+Data 27: no collision prob 0.12243 (0.07804) vs collision prob 0.87757 (0.07804)
+Data 28: no collision prob 0.10620 (0.07528) vs collision prob 0.89380 (0.07528)
+Data 29: no collision prob 0.32500 (0.04407) vs collision prob 0.67500 (0.04407)
+Data 30: no collision prob 0.08911 (0.03278) vs collision prob 0.91089 (0.03278)
+Data 31: no collision prob 1.00000 (0.00001) vs collision prob 0.00000 (0.00001)
+Data 32: no collision prob 0.85443 (0.16671) vs collision prob 0.14557 (0.16671)
+Data 33: no collision prob 0.99972 (0.00022) vs collision prob 0.00028 (0.00022)
+Data 34: no collision prob 0.02541 (0.00814) vs collision prob 0.97459 (0.00814)
+Data 35: no collision prob 0.99291 (0.00971) vs collision prob 0.00709 (0.00971)
+Data 36: no collision prob 0.01055 (0.00696) vs collision prob 0.98945 (0.00696)
+Data 37: no collision prob 0.99998 (0.00002) vs collision prob 0.00002 (0.00002)
+Data 38: no collision prob 0.28204 (0.03236) vs collision prob 0.71796 (0.03236)
+Data 39: no collision prob 0.99995 (0.00007) vs collision prob 0.00005 (0.00007)
+Data 40: no collision prob 0.99997 (0.00004) vs collision prob 0.00003 (0.00004)
+Data 41: no collision prob 1.00000 (0.00000) vs collision prob 0.00000 (0.00000)
+Data 42: no collision prob 0.06055 (0.03173) vs collision prob 0.93945 (0.03173)
+Data 43: no collision prob 0.99999 (0.00001) vs collision prob 0.00001 (0.00001)
+Data 44: no collision prob 0.99958 (0.00046) vs collision prob 0.00042 (0.00046)
+Data 45: no collision prob 0.47353 (0.09937) vs collision prob 0.52647 (0.09937)
+Data 46: no collision prob 0.99923 (0.00078) vs collision prob 0.00077 (0.00078)
+Data 47: no collision prob 0.34159 (0.03703) vs collision prob 0.65841 (0.03703)
+Data 48: no collision prob 1.00000 (0.00000) vs collision prob 0.00000 (0.00000)
+Data 49: no collision prob 0.99997 (0.00005) vs collision prob 0.00003 (0.00005)
+Data 50: no collision prob 0.99848 (0.00183) vs collision prob 0.00152 (0.00183)
+Data 51: no collision prob 1.00000 (0.00000) vs collision prob 0.00000 (0.00000)
+Data 52: no collision prob 0.00646 (0.00235) vs collision prob 0.99354 (0.00235)
+Data 53: no collision prob 0.99978 (0.00024) vs collision prob 0.00022 (0.00024)
+Data 54: no collision prob 0.24198 (0.16608) vs collision prob 0.75802 (0.16608)
+Data 55: no collision prob 0.97843 (0.00495) vs collision prob 0.02157 (0.00495)
+Data 56: no collision prob 0.87728 (0.13920) vs collision prob 0.12272 (0.13920)
+Data 57: no collision prob 0.98395 (0.01033) vs collision prob 0.01605 (0.01033)
+Data 58: no collision prob 0.31257 (0.05436) vs collision prob 0.68743 (0.05436)
+Data 59: no collision prob 0.99440 (0.00393) vs collision prob 0.00560 (0.00393)
+Data 60: no collision prob 0.99999 (0.00001) vs collision prob 0.00001 (0.00001)
+Data 61: no collision prob 0.35274 (0.03835) vs collision prob 0.64726 (0.03835)
+Data 62: no collision prob 0.99994 (0.00007) vs collision prob 0.00006 (0.00007)
+Data 63: no collision prob 0.99999 (0.00000) vs collision prob 0.00001 (0.00000)
+Data 64: no collision prob 0.08558 (0.05109) vs collision prob 0.91442 (0.05109)
+Data 65: no collision prob 0.99888 (0.00051) vs collision prob 0.00112 (0.00051)
+Data 66: no collision prob 0.15726 (0.08589) vs collision prob 0.84274 (0.08589)
+Data 67: no collision prob 0.99134 (0.00898) vs collision prob 0.00866 (0.00898)
+Data 68: no collision prob 1.00000 (0.00000) vs collision prob 0.00000 (0.00000)
+Data 69: no collision prob 0.01045 (0.00580) vs collision prob 0.98955 (0.00580)
+Data 70: no collision prob 0.02139 (0.00798) vs collision prob 0.97861 (0.00798)
+Data 71: no collision prob 0.99917 (0.00105) vs collision prob 0.00083 (0.00105)
+Data 72: no collision prob 0.31339 (0.04099) vs collision prob 0.68661 (0.04099)
+Data 73: no collision prob 0.00745 (0.00355) vs collision prob 0.99255 (0.00355)
+Data 74: no collision prob 0.80971 (0.08385) vs collision prob 0.19029 (0.08385)
+Data 75: no collision prob 0.98836 (0.01729) vs collision prob 0.01164 (0.01729)
+Data 76: no collision prob 0.99998 (0.00003) vs collision prob 0.00002 (0.00003)
+Data 77: no collision prob 0.31663 (0.07139) vs collision prob 0.68337 (0.07139)
+Data 78: no collision prob 1.00000 (0.00000) vs collision prob 0.00000 (0.00000)
+Data 79: no collision prob 0.00973 (0.00450) vs collision prob 0.99027 (0.00450)
+Data 80: no collision prob 1.00000 (0.00000) vs collision prob 0.00000 (0.00000)
+Data 81: no collision prob 0.99977 (0.00022) vs collision prob 0.00023 (0.00022)
+Data 82: no collision prob 0.99999 (0.00001) vs collision prob 0.00001 (0.00001)
+Data 83: no collision prob 1.00000 (0.00000) vs collision prob 0.00000 (0.00000)
+Data 84: no collision prob 0.29441 (0.03608) vs collision prob 0.70559 (0.03608)
+Data 85: no collision prob 0.99999 (0.00002) vs collision prob 0.00001 (0.00002)
+Data 86: no collision prob 1.00000 (0.00000) vs collision prob 0.00000 (0.00000)
+Data 87: no collision prob 0.99999 (0.00001) vs collision prob 0.00001 (0.00001)
+Data 88: no collision prob 1.00000 (0.00000) vs collision prob 0.00000 (0.00000)
+

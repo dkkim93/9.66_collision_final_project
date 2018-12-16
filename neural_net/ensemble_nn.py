@@ -25,7 +25,7 @@ class EnsembleNN(object):
 
         model = Model(inputs=inputs, outputs=outputs)
 
-        adam = Adam(lr=0.00004, amsgrad=True)
+        adam = Adam(lr=0.0003, amsgrad=True)
 
         model.compile(
             loss='categorical_crossentropy',
@@ -53,7 +53,7 @@ class EnsembleNN(object):
             model.fit(
                 X, 
                 Y, 
-                epochs=200, 
+                epochs=250, 
                 verbose=0, 
                 batch_size=batch_size,
                 initial_epoch=0,
@@ -68,8 +68,19 @@ class EnsembleNN(object):
             assert self.history.history["acc"][-1] > 0.5
 
     def prediction(self, X):
-        X = X.reshape(1, -1)
-
+        pred_n = []
         for i_model, model in enumerate(self.ensemble):
             pred = model.predict_on_batch(X)
-            print("pred:", pred)
+            pred_n.append(pred)
+
+        for i_data in range(X.shape[0]):
+            no_coll = [pred_n[i_model][i_data, 0] for i_model in range(len(self.ensemble))]
+            no_coll_mean = np.mean(no_coll)
+            no_coll_std = np.std(no_coll)
+
+            coll = [pred_n[i_model][i_data, 1] for i_model in range(len(self.ensemble))]
+            coll_mean = np.mean(coll)
+            coll_std = np.std(coll)
+
+            print("Data {}: no collision prob {:.5f} ({:.5f}) vs collision prob {:.5f} ({:.5f})".format(
+                i_data, no_coll_mean, no_coll_std, coll_mean, coll_std))

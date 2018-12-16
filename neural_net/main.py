@@ -2,7 +2,7 @@ from normal_nn import NormalNN
 from ensemble_nn import EnsembleNN
 from utils import *
 
-MODEL = "ensemble"  # Either "normal" or "ensemble"
+MODEL = "normal"  # Either "normal" or "ensemble"
 
 
 if __name__ == "__main__":
@@ -29,4 +29,6 @@ if __name__ == "__main__":
     model.train(input_data, label_data)
 
     # Test model
-    model.prediction(input_data[0])
+    test_data = load_data("../data/logs/obs_history_1")
+    input_data, label_data = process_data(test_data)
+    model.prediction(input_data)
