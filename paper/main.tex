@@ -1,0 +1,70 @@
+\documentclass[10pt,letterpaper]{article}
+
+\usepackage{cogsci}
+\usepackage{pslatex}
+\usepackage{apacite}
+\usepackage{graphicx}
+\usepackage{cleveref}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage[]{algpseudocode}
+\usepackage[labelfont=bf]{caption}
+\usepackage[labelfont=bf]{subcaption}
+
+\newtheorem{definition}{Definition}
+\usepackage{pb-diagram,lamsarrow,pb-lams}
+
+\usepackage[authormarkuptext=name,addedmarkup=bf,authormarkupposition=left]{changes}
+%\usepackage[final]{changes} %Use this to hide all comments.
+\definechangesauthor[name={D.~K.}, color={blue}]{dk}
+\definechangesauthor[name={R.~W.}, color={red}]{rw}
+\definechangesauthor[name={B.~L.}, color={green}]{bl}
+
+\newcommand{\dkXX}[1]{\added[id=dk,remark={}]{#1}}
+\newcommand{\rwXX}[1]{\added[id=rw,remark={}]{#1}}
+\newcommand{\blXX}[1]{\added[id=bl,remark={}]{#1}}
+
+\newcommand{\jsec}[1]{\marginpar{\fcolorbox{yellow}{yellow}{\parbox{0.7in}{\raggedright
+        \color{blue} \tiny #1 }}}}
+\newcommand{\hsec}[1]{\marginpar{\fcolorbox{yellow}{yellow}{\parbox{0.7in}{\raggedright
+        \color{green} \tiny #1 }}}}
+\newcommand{\jhmargin}[2]{{\color{orange}#1}\marginpar{\color{orange}\tiny\raggedright
+    \bf [JH] #2}}
+
+
+
+\title{On the Comparison of Pedestrian Intent Estimation by Humans and Machines}
+ 
+\author{{\large \bf Dong-Ki Kim (dkkim93@mit.edu)} \\
+  Laboratory for Information and Decision Systems 
+  \AND {\large \bf Rose E. Wang (rewang@mit.edu)} \\
+  Department of Electrical Engineering and Computer Science
+  \AND {\large \bf Bj\"orn L\"utjens (lutjens@mit.edu)} \\
+  Laboratory for Information and Decision Systems}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Human drivers excel in predicting the behavior of pedestrians on the sidewalk. The drivers observe pedestrian position, gaze, body pose and more to infer hidden variables that guide the future pedestrian trajectory. These hidden variables can be the pedestrian's goal, dynamics model and more. Autonomous vehicles need to copy the human capability to predict pedestrian intent to achieve to drive as safe and confident as humans. This project learns a Hidden Markov Model (HMM) and a neural network model to imitate human capabilities in estimating pedestrian intent. Especially for the neural network model, we experiment with two variants: one without uncertainty and another with uncertainty. Our results show, that the HMM resembles human decision making, by focusing on predictive euclidean distance, but misses out on unmodeled more complicated hidden states. In comparison to the HMM, the neural network model is more data hungry and better learned the underlying pedestrian behavior. Interestingly, the neural network with uncertainty estimate correlates with the human uncertainty.
+\end{abstract}
+
+\input{intro}
+\input{related_work}
+\input{approach}
+\input{results}
+\input{conclusion}
+
+\section{Acknowledgments}
+
+We appreciate Professor Joshua Tenenbaum's guidance and 9.660 TAs' insightful feedback on our project.
+
+\newpage
+\bibliographystyle{apacite}
+\setlength{\bibleftmargin}{.125in}
+\setlength{\bibindent}{-\bibleftmargin}
+\bibliography{references}
+
+\end{document}
