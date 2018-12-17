@@ -4,6 +4,9 @@ from hmmlearn import hmm
 # import matplotlib.pyplot as plt
 import pylab as plt
 import random
+import numpy as np
+import pandas as pd
+import seaborn as sns
 
 DIRECTIONS = np.array([[0,1],[1,1],[1,0], [1,-1], [0,-1], [-1,-1],[-1,0], [-1,1]])
 np.random.seed(0)
@@ -96,8 +99,7 @@ def get_direction_vector(directions):
 
 
 def get_distance_model(dists): 
-
-	model = hmm.GaussianHMM(n_components=6, covariance_type="full")
+	model = hmm.GaussianHMM(n_components=10, covariance_type="full")
 	model.fit(dists)
 	return model
 
@@ -127,6 +129,24 @@ def predict_position(dir_samples, pos):
 		cur_pos += dir_vec
 		pos_res = np.vstack((pos_res, cur_pos))
 	return pos_res
+
+
+def vis_dist_data(data):
+	data = [0, 1, 7, 13, 16, 9, 8, 5, 3, 26]
+	plt.hist(
+	   data,
+	   alpha=0.7, rwidth=0.85,
+	   bins=10)
+	# sns.set_style("darkgrid")
+	sns.set_style("whitegrid")
+	# sns.set_style("ticks")
+	# plt.rc('text', usetex=True)
+	plt.rc('font', family='serif')
+	plt.xlim([0, 10])
+	plt.xlabel(r"\textbf{Rating ($0$: No collision, $10$: Collision)}", size=14)
+	plt.ylabel(r"\textbf{Frequency}", size=14)
+	plt.title(r"\textbf{Histogram of Human Data Collection (Total $89$ Samples)}", size=15)
+	plt.show()
 
 def create_model(obs, n_components=8):
 	model_exp = hmm.GaussianHMM(n_components=8, covariance_type="full")

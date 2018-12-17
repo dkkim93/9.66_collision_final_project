@@ -55,13 +55,14 @@ def analyze_sim_data():
 	data= read_data.load_data(file_name)
 	experiments = 88
 	distances = [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]
+	dist_res = [0 for i in range(10)]
 	acc = []
 	# i need to fix
-	# for dist_thresh in distances:
+	# for dist_thresh in [0.1]:
 	for dist_thresh in [0.1]:
 		actual = 0
 		detected = 0
-		for i in range(88): 
+		for i in [5,51,80,83,4,11,14,16,22]: 
 			# positions, only want the first 5 samples
 			a1 = data["agent1_pos"][i:i+1][:5]
 			a2 = data["agent2_pos"][i:i+1][:5]
@@ -70,8 +71,8 @@ def analyze_sim_data():
 			dir1 = data["agent1_heading"][i:i+1]
 			dir2 = data["agent2_heading"][i:i+1]
 
-			a1_pos = utils.radian_to_dir(dir1[0][:5], a1[0][-1])
-			a2_pos = utils.radian_to_dir(dir2[0][:5], a2[0][-1])
+			a1_pos = utils.radian_to_dir(dir1[0][:10], a1[0][-1])
+			a2_pos = utils.radian_to_dir(dir2[0][:10], a2[0][-1])
 
 			# Create distance model
 			dists = utils.get_euclidean_dists(a1_pos, a2_pos)
@@ -79,27 +80,44 @@ def analyze_sim_data():
 			# print("Here are the distances between the two agents: {}".format(dists))
 
 			model = utils.get_distance_model(dists)
-			log_prob = model.score_samples(np.array([[0.0],[1.0],[2.0],[3.0],[4.0],[5.0],[6.0]]))
+			# Modifying the start probability
+			# model.start_prob_ = np.array([0.0 for i in range(10)])
+			# model.start_prob_
+			log_prob = model.score_samples(np.array([[0.0],[1.0],[2.0],[3.0],[4.0],[5.0],[6.0],[7.0],[8.0],[9.0],[10.0]]))
 			if np.any(data["is_collided"][i]): 
 				actual += 1
 			# row_sums = a.sum(axis=1)
 			# new_matrix = a / row_sums[:, numpy.newaxis]
 			nm = np.exp(log_prob[1]) 
-			row_sums = nm.sum(axis=1)
-			nm = nm/row_sums[:,np.newaxis]
+			col_sums = nm.sum(axis=0)
+			row_sums = col_sums.sum()
+			col_sums = col_sums/row_sums
+			# nm = nm/row_sums[:,np.newaxis]
+			# col_sums = nm.sum(axis=0)
+			# nm = nm/col_sums[np.newaxis,:]
+			# print(col_sums)
+
 	
 			with open('../hmm_transition_matrix/e_{}.txt'.format(i), 'wb') as f:
-				pickle.dump(nm, f)
-
-
+				pickle.dump(col_sums, f)
 
 			# sampling distance model
-			Xd,Zd = model.sample(15)
+			Xd,Zd = model.sample(10)
+			ind = int(abs(np.round(Xd)[0][0]))
+			if ind >= 10:
+				ind = 9
+
+			# Getting frequency counts 
+			print(ind)
+			dist_res[ind] += 1
+			# Detecting collisions
+			collision = np.any(Xd < dist_thresh)
+			print("COLLISION DETECTED FOR {}: {}".format(i, collision))
 			if np.any(Xd < dist_thresh):
 				detected +=1
 			# utils.plot(Xd,Zd, heading=i)
 			# plt.plot(Zd)
-
+		print(dist_res[::-1])
 		print("Transition matrix for experiment {}: \n {} ".format(i, normalized(np.exp(log_prob[1]))))
 		a = float(detected)/float(actual)
 		print("Actual: {}, vs. Detected: {}; accuracy: {}".format(actual, detected, a))
