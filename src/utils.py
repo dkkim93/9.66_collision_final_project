@@ -1,24 +1,32 @@
 # Hidden parameter: euclidean distance
 import numpy as np
 from hmmlearn import hmm
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
+import pylab as plt
 import random
+import numpy as np
+import pandas as pd
+import seaborn as sns
 
 DIRECTIONS = np.array([[0,1],[1,1],[1,0], [1,-1], [0,-1], [-1,-1],[-1,0], [-1,1]])
 np.random.seed(0)
+# plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+params = {'legend.fontsize': 12}
+plt.rcParams.update(params)
 
 ### PLOTTING DATA
 def plot(X,Z, heading=None):
 	plt.plot(X)
 	if heading: 
-		plt.title("HMM results with experiment {}".format(heading))
-	plt.xlabel("Time")
+		plt.title('HMM results with experiment {}'.format(heading))
+	plt.xlabel('Time')
 	plt.ylabel("Distance between two agents")
 	# plt.plot(Z)
 	plt.ylim((0,7))
 	plt.legend(loc='best')
-	filename = 'hmm_e_' + str(heading) + '.png' 
-	plt.savefig(filename)
+	filename = '../hmm_results/hmm_e_' + str(heading) + '.png' 
+	# plt.savefig(filename)
 	plt.clf()
 	# plt.show()
 
@@ -66,7 +74,7 @@ def radian_to_dir(data, pos):
 	cur_pos = pos
 	pos_res = np.array([pos])
 	data = radian_to_degree(data)
-	print("The heading in degrees is: {}".format(data))
+	# print("The heading in degrees is: {}".format(data))
 	for d in data:
 		i, j, wi, wj = get_dir_indices_weight(d) 
 		cur_pos += DIRECTIONS[i]*wi + DIRECTIONS[j]*wj
@@ -91,7 +99,7 @@ def get_direction_vector(directions):
 
 
 def get_distance_model(dists): 
-	model = hmm.GaussianHMM(n_components=5, covariance_type="full")
+	model = hmm.GaussianHMM(n_components=10, covariance_type="full")
 	model.fit(dists)
 	return model
 
@@ -121,6 +129,24 @@ def predict_position(dir_samples, pos):
 		cur_pos += dir_vec
 		pos_res = np.vstack((pos_res, cur_pos))
 	return pos_res
+
+
+def vis_dist_data(data):
+	data = [0, 1, 7, 13, 16, 9, 8, 5, 3, 26]
+	plt.hist(
+	   data,
+	   alpha=0.7, rwidth=0.85,
+	   bins=10)
+	# sns.set_style("darkgrid")
+	sns.set_style("whitegrid")
+	# sns.set_style("ticks")
+	# plt.rc('text', usetex=True)
+	plt.rc('font', family='serif')
+	plt.xlim([0, 10])
+	plt.xlabel(r"\textbf{Rating ($0$: No collision, $10$: Collision)}", size=14)
+	plt.ylabel(r"\textbf{Frequency}", size=14)
+	plt.title(r"\textbf{Histogram of Human Data Collection (Total $89$ Samples)}", size=15)
+	plt.show()
 
 def create_model(obs, n_components=8):
 	model_exp = hmm.GaussianHMM(n_components=8, covariance_type="full")
